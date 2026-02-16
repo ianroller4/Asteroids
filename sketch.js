@@ -7,6 +7,9 @@
 
 let player;
 
+let bullets = [];
+let asteroids = [];
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   player = createPlayer();
@@ -14,20 +17,52 @@ function setup() {
 
 function draw() {
   background("black");
+  GetInput();
   player.update();
+
+  for (let i = 0; i < bullets.length; i++) {
+    bullets[i].update();
+    if (bullets[i].life <= 0) {
+      bullets.splice(i, 1);
+    }
+  }
+
+  for (let i = 0; i < asteroids.length; i++) {
+    asteroids[i].update();
+  }
+}
+
+function GetInput() {
+  if (keyIsDown(65) || keyIsDown(LEFT_ARROW)) {
+    // Rotate Left
+    player.rotateLeft();
+  }
+  if (keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {
+    // Rotate Right
+    player.rotateRight();
+  }
+  if (keyIsDown(87) || keyIsDown(UP_ARROW)) {
+    // Fire Engine
+    player.fireEngine();
+  } else {
+    // Release Engine
+    player.releaseEngine();
+  }
+  if (keyIsDown(83) || keyIsDown(DOWN_ARROW)) {
+    // Hyper Jump
+    player.hyperJump();
+  }
+  if (keyIsDown(32)) {
+    bullets.push(new Bullet(player.pos.copy(), player.rot));
+  }
 }
 
 function createPlayer() {
   let position = createVector(width / 2, height / 2);
-  return new Player(position, 0);
+  return new Player(position);
 }
 
 function createAsteroid() {
   let position = createVector(width / 4, height / 4);
-  return new Asteroid(position, 0);
-}
-
-function createBullet() {
-  let position = createVector(width / 6, height / 6);
-  return new Bullet(position, 0);
+  return new Asteroid(position);
 }

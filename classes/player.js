@@ -1,12 +1,12 @@
 class Player extends Actor {
-  constructor(pos, layer) {
+  constructor(pos) {
     let a = createVector(-10, 10);
     let b = createVector(0, -20);
     let c = createVector(10, 10);
     let vertices = [a, b, c];
     let p = new Polygon(vertices);
 
-    super(pos, p, layer);
+    super(pos, p);
     this.rot = 0;
     this.vel = createVector(0, 0);
 
@@ -18,7 +18,6 @@ class Player extends Actor {
 
   update() {
     push();
-    this.move();
     translate(this.pos.x, this.pos.y);
     rotate(this.rot);
     this.poly.drawPoly();
@@ -28,26 +27,12 @@ class Player extends Actor {
     this.pos.add(this.vel);
   }
 
-  move() {
-    if (keyIsDown(65) || keyIsDown(LEFT_ARROW)) {
-      // Rotate Left
-      this.rot -= 0.05;
-    }
-    if (keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {
-      // Rotate Right
-      this.rot += 0.05;
-    }
-    if (keyIsDown(87) || keyIsDown(UP_ARROW)) {
-      // Fire Engine
-      this.fireEngine();
-    } else {
-      // Release Engine
-      this.releaseEngine();
-    }
-    if (keyIsDown(83) || keyIsDown(DOWN_ARROW)) {
-      // Hyper Jump
-      this.hyperJump();
-    }
+  rotateLeft() {
+    this.rot -= 0.05;
+  }
+
+  rotateRight() {
+    this.rot += 0.05;
   }
 
   fireEngine() {

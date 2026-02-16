@@ -1,8 +1,7 @@
 class Actor {
-  constructor(pos, poly, layer) {
+  constructor(pos, poly) {
     this.pos = pos;
     this.poly = poly;
-    this.layer = layer;
   }
 
   screenWrap() {

@@ -2,7 +2,7 @@ class Player extends Actor {
   constructor(pos, poly, layer) {
     super(pos, poly, layer);
     this.rot = 0;
-    this.vel = 0;
+    this.vel = createVector(0, 0);
 
     // Hyper Jump Variables
     this.hyperJumpTimer = 0;
@@ -17,6 +17,9 @@ class Player extends Actor {
     rotate(this.rot);
     this.poly.drawPoly();
     pop();
+    this.hyperJumpTimerUpdate();
+    this.screenWrap();
+    this.pos.add(this.vel);
   }
 
   move() {
@@ -30,13 +33,25 @@ class Player extends Actor {
     }
     if (keyIsDown(87) || keyIsDown(UP_ARROW)) {
       // Fire Engine
+      this.fireEngine();
     } else {
       // Release Engine
+      this.releaseEngine();
     }
     if (keyIsDown(83) || keyIsDown(DOWN_ARROW)) {
       // Hyper Jump
       this.hyperJump();
     }
+  }
+
+  fireEngine() {
+    let force = p5.Vector.fromAngle(this.rot - HALF_PI);
+    force.mult(0.4);
+    this.vel.add(force);
+  }
+
+  releaseEngine() {
+    this.vel.mult(0.95);
   }
 
   hyperJump() {

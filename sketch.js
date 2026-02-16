@@ -19,9 +19,15 @@ function draw() {
 
 function createPlayer() {
   let position = createVector(width / 2, height / 2);
-  let a = createVector(-10, 10);
-  let b = createVector(0, -20);
-  let c = createVector(10, 10);
-  let vertices = [a, b, c];
-  return new Player(position, new Polygon(vertices), 0);
+  return new Player(position, 0);
+}
+
+function createAsteroid() {
+  let position = createVector(width / 4, height / 4);
+  return new Asteroid(position, 0);
+}
+
+function createBullet() {
+  let position = createVector(width / 6, height / 6);
+  return new Bullet(position, 0);
 }

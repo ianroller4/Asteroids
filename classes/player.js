@@ -1,6 +1,12 @@
 class Player extends Actor {
-  constructor(pos, poly, layer) {
-    super(pos, poly, layer);
+  constructor(pos, layer) {
+    let a = createVector(-10, 10);
+    let b = createVector(0, -20);
+    let c = createVector(10, 10);
+    let vertices = [a, b, c];
+    let p = new Polygon(vertices);
+
+    super(pos, p, layer);
     this.rot = 0;
     this.vel = createVector(0, 0);
 

@@ -37,6 +37,32 @@ function draw() {
   for (let i = 0; i < asteroids.length; i++) {
     asteroids[i].update();
   }
+  CollisionCheck();
+}
+
+function CollisionCheck() {
+  // Player Collided with Asteroids
+  for (let a = asteroids.length; a >= 0; a--) {
+    // Check if player collided with asteroid
+  }
+
+  // Bullets Collided with Asteroids
+  for (let b = bullets.length - 1; b >= 0; b--) {
+    for (let a = asteroids.length - 1; a >= 0; a--) {
+      // Check if bullet collided with asteroid
+      let hit = bullets[b].poly.polyPolyCollision(
+        asteroids[a].poly.vertices,
+        bullets[b].pos,
+        asteroids[a].pos,
+      );
+      if (hit) {
+        // If hit remove bullet and asteroid
+        bullets.splice(b, 1);
+        asteroids.splice(a, 1);
+        break;
+      }
+    }
+  }
 }
 
 function GetInput() {

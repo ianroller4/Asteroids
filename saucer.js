@@ -1,5 +1,5 @@
 class Saucer extends Actor {
-    constructor(pos, poly, layer) {
-        super(pos, poly, layer);
-    }
+  constructor(pos, poly) {
+    super(pos, poly);
+  }
 }

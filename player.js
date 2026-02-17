@@ -14,6 +14,11 @@ class Player extends Actor {
     this.hyperJumpTimer = 0;
     this.hyperJumpTimerMax = 2000;
     this.canHyperJump = true;
+
+    // Shoot Variables
+    this.canShoot = true;
+    this.shootTimer = 0;
+    this.shootTimerMax = 500;
   }
 
   update() {
@@ -23,8 +28,28 @@ class Player extends Actor {
     this.poly.drawPoly();
     pop();
     this.hyperJumpTimerUpdate();
+    this.shootTimerUpdate();
     this.screenWrap();
     this.pos.add(this.vel);
+  }
+
+  canShootBullet() {
+    return this.canShoot;
+  }
+
+  shoot() {
+    this.canShoot = false;
+    return new Bullet(this.pos.copy(), this.rot);
+  }
+
+  shootTimerUpdate() {
+    if (!this.canShoot) {
+      this.shootTimer += deltaTime;
+      if (this.shootTimer >= this.shootTimerMax) {
+        this.shootTimer -= this.shootTimerMax;
+        this.canShoot = true;
+      }
+    }
   }
 
   rotateLeft() {
@@ -57,7 +82,7 @@ class Player extends Actor {
     if (!this.canHyperJump) {
       this.hyperJumpTimer += deltaTime;
       if (this.hyperJumpTimer >= this.hyperJumpTimerMax) {
-        this.hyperJumpTimer = 0;
+        this.hyperJumpTimer -= this.hyperJumpTimerMax;
         this.canHyperJump = true;
       }
     }

@@ -1,5 +1,5 @@
 class Asteroid extends Actor {
-  constructor(pos, layer) {
+  constructor(pos) {
     let vertices = [];
     let a = 0;
     while (a < 360) {
@@ -11,13 +11,21 @@ class Asteroid extends Actor {
     }
     let p = new Polygon(vertices);
 
-    super(pos, p, layer);
+    super(pos, p);
+    this.vel = p5.Vector.random2D();
+    this.vel.mult(5);
   }
 
   update() {
     push();
+    this.move();
     translate(this.pos.x, this.pos.y);
     this.poly.drawPoly();
     pop();
+    this.screenWrap();
+  }
+
+  move() {
+    this.pos.add(this.vel);
   }
 }

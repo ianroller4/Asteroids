@@ -7,12 +7,19 @@
 
 let player;
 
+let startingAsteroids = 5;
+
 let bullets = [];
 let asteroids = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   player = createPlayer();
+  for (let i = 0; i < startingAsteroids; i++) {
+    let pos = p5.Vector.random2D();
+    pos.mult(sqrt(pow(width, 2) + pow(height, 2)));
+    asteroids.push(new Asteroid(pos));
+  }
 }
 
 function draw() {
@@ -53,7 +60,9 @@ function GetInput() {
     player.hyperJump();
   }
   if (keyIsDown(32)) {
-    bullets.push(new Bullet(player.pos.copy(), player.rot));
+    if (player.canShootBullet()) {
+      bullets.push(player.shoot());
+    }
   }
 }
 

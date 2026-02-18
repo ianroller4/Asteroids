@@ -40,6 +40,15 @@ class Polygon {
       if (collided) {
         return true;
       }
+
+      collided = this.polyPointCollision(
+        pv[0].x + pos2.x,
+        pv[0].y + pos2.y,
+        pos1,
+      );
+      if (collided) {
+        return true;
+      }
     }
     return false;
   }
@@ -88,7 +97,32 @@ class Polygon {
     return false;
   }
 
-  polyPointCollision() {
-    return false;
+  polyPointCollision(px, py, pos1) {
+    let collided = false;
+
+    let next = 0;
+    for (let curr = 0; curr < this.vertices.length; curr++) {
+      next = curr + 1;
+      if (next == this.vertices.length) {
+        next = 0;
+      }
+
+      let vc = this.vertices[curr];
+      let vn = this.vertices[next];
+
+      let vcx = vc.x + pos1.x;
+      let vcy = vc.y + pos1.y;
+      let vnx = vn.x + pos1.x;
+      let vny = vn.y + pos1.y;
+
+      if (
+        ((vcy > py && vny < py) || (vcy < py && vny > py)) &&
+        px < ((vnx - vcx) * (py - vcy)) / (vny - vcy) + vcx
+      ) {
+        collided = !collided;
+      }
+
+      return collided;
+    }
   }
 }

@@ -42,11 +42,27 @@ function draw() {
 
 function CollisionCheck() {
   // Player Collided with Asteroids
-  for (let a = asteroids.length; a >= 0; a--) {
-    // Check if player collided with asteroid
-  }
+  checkAsteroidCollision();
 
   // Bullets Collided with Asteroids
+  checkBulletCollision();
+}
+
+function checkAsteroidCollision() {
+  for (let a = asteroids.length - 1; a >= 0; a--) {
+    // Check if player collided with asteroid
+    let hit = asteroids[a].poly.polyPolyCollision(
+      player.poly.vertices,
+      asteroids[a].pos,
+      player.pos,
+    );
+    if (hit) {
+      asteroids.splice(a, 1);
+    }
+  }
+}
+
+function checkBulletCollision() {
   for (let b = bullets.length - 1; b >= 0; b--) {
     for (let a = asteroids.length - 1; a >= 0; a--) {
       // Check if bullet collided with asteroid
@@ -84,6 +100,7 @@ function GetInput() {
   if (keyIsDown(83) || keyIsDown(DOWN_ARROW)) {
     // Hyper Jump
     player.hyperJump();
+    checkAsteroidCollision();
   }
   if (keyIsDown(32)) {
     if (player.canShootBullet()) {
@@ -95,9 +112,4 @@ function GetInput() {
 function createPlayer() {
   let position = createVector(width / 2, height / 2);
   return new Player(position);
-}
-
-function createAsteroid() {
-  let position = createVector(width / 4, height / 4);
-  return new Asteroid(position);
 }

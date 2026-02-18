@@ -30,6 +30,10 @@ class Player extends Actor {
     this.hyperJumpTimerUpdate();
     this.shootTimerUpdate();
     this.screenWrap();
+    this.move();
+  }
+
+  move() {
     this.pos.add(this.vel);
   }
 

@@ -9,6 +9,7 @@ class Player extends Actor {
     super(pos, p);
     this.rot = 0;
     this.vel = createVector(0, 0);
+    this.lives = 3;
 
     // Hyper Jump Variables
     this.hyperJumpTimer = 0;
@@ -19,6 +20,11 @@ class Player extends Actor {
     this.canShoot = true;
     this.shootTimer = 0;
     this.shootTimerMax = 500;
+
+    // Invincibility Variables
+    this.invincible = false;
+    this.invincibleTimer = 0;
+    this.invincibleTimerMax = 1000;
   }
 
   update() {
@@ -29,8 +35,41 @@ class Player extends Actor {
     pop();
     this.hyperJumpTimerUpdate();
     this.shootTimerUpdate();
+    this.invincibleTimerUpdate();
     this.screenWrap();
     this.move();
+    this.invincibleRing();
+  }
+
+  death() {
+    if (!this.invincible) {
+      this.pos.x = width / 2;
+      this.pos.y = height / 2;
+      this.lives--;
+      this.invincible = true;
+    }
+  }
+
+  invincibleRing() {
+    if (this.invincible) {
+      push();
+      translate(this.pos.x, this.pos.y);
+      noFill();
+      stroke("cyan");
+      strokeWeight(3);
+      circle(0, 0, 50);
+      pop();
+    }
+  }
+
+  invincibleTimerUpdate() {
+    if (this.invincible) {
+      this.invincibleTimer += deltaTime;
+      if (this.invincibleTimer >= this.invincibleTimerMax) {
+        this.invincibleTimer = 0;
+        this.invincible = false;
+      }
+    }
   }
 
   move() {

@@ -121,8 +121,7 @@ class Polygon {
       ) {
         collided = !collided;
       }
-
-      return collided;
     }
+    return collided;
   }
 }

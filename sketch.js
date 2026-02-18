@@ -58,6 +58,7 @@ function checkAsteroidCollision() {
     );
     if (hit) {
       asteroids.splice(a, 1);
+      player.death();
     }
   }
 }

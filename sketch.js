@@ -12,10 +12,18 @@ let startingAsteroids = 5;
 let bullets = [];
 let asteroids = [];
 
-let song;
+let bgMusic;
+let engineSFX;
+let explosionSFX;
+let hyperJumpSFX;
+let shootSFX;
 
 function preload() {
-  song = loadSound("AsteroidsMusic.mp3");
+  bgMusic = loadSound("SFX/AsteroidsMusic.mp3");
+  engineSFX = loadSound("SFX/Engine.mp3");
+  explosionSFX = loadSound("SFX/Explosion.mp3");
+  hyperJumpSFX = loadSound("SFX/HyperJump.mp3");
+  shootSFX = loadSound("SFX/Shoot.mp3");
 }
 
 function setup() {
@@ -51,10 +59,10 @@ function draw() {
 }
 
 function mousePressed() {
-  if (!song.isPlaying()) {
-    song.setVolume(0.2);
-    song.play();
-    song.loop();
+  if (!bgMusic.isPlaying()) {
+    bgMusic.setVolume(0.2);
+    bgMusic.play();
+    bgMusic.loop();
   }
 }
 
@@ -99,6 +107,7 @@ function checkAsteroidCollision() {
       } else {
         player.updateScore(100);
       }
+      explosionSFX.play();
       asteroids.splice(a, 1);
       player.death();
     }
@@ -125,6 +134,7 @@ function checkBulletCollision() {
         } else {
           player.updateScore(100);
         }
+        explosionSFX.play();
         bullets.splice(b, 1);
         asteroids.splice(a, 1);
         break;
@@ -169,17 +179,23 @@ function GetInput() {
   if (keyIsDown(87) || keyIsDown(UP_ARROW)) {
     // Fire Engine
     player.fireEngine();
+    engineSFX.play();
   } else {
     // Release Engine
     player.releaseEngine();
+    engineSFX.stop();
   }
   if (keyIsDown(83) || keyIsDown(DOWN_ARROW)) {
     // Hyper Jump
-    player.hyperJump();
-    checkAsteroidCollision();
+    if (player.canHyperJump) {
+      player.hyperJump();
+      hyperJumpSFX.play();
+      checkAsteroidCollision();
+    }
   }
   if (keyIsDown(32)) {
     if (player.canShootBullet()) {
+      shootSFX.play();
       bullets.push(player.shoot());
     }
   }

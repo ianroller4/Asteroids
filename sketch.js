@@ -12,6 +12,12 @@ let startingAsteroids = 5;
 let bullets = [];
 let asteroids = [];
 
+let song;
+
+function preload() {
+  song = loadSound("AsteroidsMusic.mp3");
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   player = createPlayer();
@@ -42,6 +48,14 @@ function draw() {
   }
 
   DrawHud();
+}
+
+function mousePressed() {
+  if (!song.isPlaying()) {
+    song.setVolume(0.2);
+    song.play();
+    song.loop();
+  }
 }
 
 function DrawHud() {

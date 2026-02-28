@@ -24,20 +24,39 @@ function setup() {
 
 function draw() {
   background("black");
-  GetInput();
-  player.update();
+  if (player.lives > 0) {
+    GetInput();
+    player.update();
 
-  for (let i = 0; i < bullets.length; i++) {
-    bullets[i].update();
-    if (bullets[i].life <= 0) {
-      bullets.splice(i, 1);
+    for (let i = 0; i < bullets.length; i++) {
+      bullets[i].update();
+      if (bullets[i].life <= 0) {
+        bullets.splice(i, 1);
+      }
     }
+
+    for (let i = 0; i < asteroids.length; i++) {
+      asteroids[i].update();
+    }
+    CollisionCheck();
   }
 
-  for (let i = 0; i < asteroids.length; i++) {
-    asteroids[i].update();
-  }
-  CollisionCheck();
+  DrawHud();
+}
+
+function DrawHud() {
+  textSize(100);
+  fill("white");
+  // Draw Lives
+  push();
+  textAlign(LEFT, TOP);
+  text(str(player.lives), 0, 0);
+  pop();
+  // Draw Score
+  push();
+  textAlign(RIGHT, TOP);
+  text(str(player.score), width, 0);
+  pop();
 }
 
 function CollisionCheck() {
@@ -58,9 +77,13 @@ function checkAsteroidCollision() {
     );
     if (hit) {
       if (asteroids[a].lifeState == 3) {
+        player.updateScore(20);
         spawnMidAsteroids(asteroids[a].pos.copy());
       } else if (asteroids[a].lifeState == 2) {
+        player.updateScore(50);
         spawnBabyAsteroids(asteroids[a].pos.copy());
+      } else {
+        player.updateScore(100);
       }
       asteroids.splice(a, 1);
       player.death();
@@ -80,9 +103,13 @@ function checkBulletCollision() {
       if (hit) {
         // If hit remove bullet and asteroid
         if (asteroids[a].lifeState == 3) {
+          player.updateScore(20);
           spawnMidAsteroids(asteroids[a].pos.copy());
         } else if (asteroids[a].lifeState == 2) {
+          player.updateScore(50);
           spawnBabyAsteroids(asteroids[a].pos.copy());
+        } else {
+          player.updateScore(100);
         }
         bullets.splice(b, 1);
         asteroids.splice(a, 1);

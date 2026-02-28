@@ -25,6 +25,9 @@ class Player extends Actor {
     this.invincible = false;
     this.invincibleTimer = 0;
     this.invincibleTimerMax = 1000;
+
+    this.score = 0;
+    this.pointsForNewLife = 0;
   }
 
   update() {
@@ -39,6 +42,15 @@ class Player extends Actor {
     this.screenWrap();
     this.move();
     this.invincibleRing();
+  }
+
+  updateScore(score) {
+    this.score += score;
+    this.pointsForNewLife += score;
+    if (this.pointsForNewLife >= 10000) {
+      this.pointsForNewLife -= 10000;
+      this.lives += 1;
+    }
   }
 
   death() {

@@ -18,7 +18,7 @@ function setup() {
   for (let i = 0; i < startingAsteroids; i++) {
     let pos = p5.Vector.random2D();
     pos.mult(sqrt(pow(width, 2) + pow(height, 2)));
-    asteroids.push(new Asteroid(pos));
+    asteroids.push(new Asteroid(pos, 3, p5.Vector.random2D()));
   }
 }
 
@@ -57,6 +57,11 @@ function checkAsteroidCollision() {
       player.pos,
     );
     if (hit) {
+      if (asteroids[a].lifeState == 3) {
+        spawnMidAsteroids(asteroids[a].pos.copy());
+      } else if (asteroids[a].lifeState == 2) {
+        spawnBabyAsteroids(asteroids[a].pos.copy());
+      }
       asteroids.splice(a, 1);
       player.death();
     }
@@ -74,12 +79,41 @@ function checkBulletCollision() {
       );
       if (hit) {
         // If hit remove bullet and asteroid
+        if (asteroids[a].lifeState == 3) {
+          spawnMidAsteroids(asteroids[a].pos.copy());
+        } else if (asteroids[a].lifeState == 2) {
+          spawnBabyAsteroids(asteroids[a].pos.copy());
+        }
         bullets.splice(b, 1);
         asteroids.splice(a, 1);
         break;
       }
     }
   }
+}
+
+function spawnMidAsteroids(position) {
+  let baseDir = p5.Vector.random2D();
+  let aDir = baseDir.copy().rotate(radians(20));
+  let bDir = baseDir.copy().rotate(radians(-15));
+
+  let offSet = p5.Vector.random2D();
+  offSet.mult(3);
+
+  asteroids.push(new Asteroid(position.copy().add(offSet), 2, aDir));
+  asteroids.push(new Asteroid(position.copy().sub(offSet), 2, bDir));
+}
+
+function spawnBabyAsteroids(position) {
+  let baseDir = p5.Vector.random2D();
+  let aDir = baseDir.copy().rotate(radians(20));
+  let bDir = baseDir.copy().rotate(radians(-15));
+
+  let offSet = p5.Vector.random2D();
+  offSet.mult(3);
+
+  asteroids.push(new Asteroid(position.copy().add(offSet), 1, aDir));
+  asteroids.push(new Asteroid(position.copy().sub(offSet), 1, bDir));
 }
 
 function GetInput() {

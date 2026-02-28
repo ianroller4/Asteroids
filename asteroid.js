@@ -1,10 +1,10 @@
 class Asteroid extends Actor {
-  constructor(pos) {
+  constructor(pos, lifeState, direction) {
     let vertices = [];
     let a = 0;
     while (a < 360) {
-      let x = cos(radians(a)) * random(30, 50);
-      let y = sin(radians(a)) * random(30, 50);
+      let x = cos(radians(a)) * random(10 * lifeState, 20 * lifeState);
+      let y = sin(radians(a)) * random(10 * lifeState, 20 * lifeState);
       let v = createVector(x, y);
       vertices.push(v);
       a += random(15, 40);
@@ -12,8 +12,9 @@ class Asteroid extends Actor {
     let p = new Polygon(vertices);
 
     super(pos, p);
-    this.vel = p5.Vector.random2D();
-    this.vel.mult(5);
+    this.vel = direction;
+    this.vel.mult(5 / lifeState);
+    this.lifeState = lifeState;
   }
 
   update() {

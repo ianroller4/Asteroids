@@ -94,6 +94,8 @@ class Player extends Actor {
 
   shoot() {
     this.canShoot = false;
+    let knockback = p5.Vector.fromAngle(this.rot + HALF_PI);
+    this.vel.add(knockback);
     return new Bullet(this.pos.copy(), this.rot);
   }
 

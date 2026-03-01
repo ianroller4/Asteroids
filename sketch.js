@@ -12,6 +12,8 @@ let startingAsteroids = 5;
 let bullets = [];
 let asteroids = [];
 
+let saucer;
+
 let bgMusic;
 let engineSFX;
 let explosionSFX;
@@ -29,6 +31,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   player = createPlayer();
+  saucer = new Saucer(createVector(width / 4, height / 4), 5);
   for (let i = 0; i < startingAsteroids; i++) {
     let pos = p5.Vector.random2D();
     pos.mult(sqrt(pow(width, 2) + pow(height, 2)));
@@ -41,7 +44,7 @@ function draw() {
   if (player.lives > 0) {
     GetInput();
     player.update();
-
+    saucer.update();
     for (let i = 0; i < bullets.length; i++) {
       bullets[i].update();
       if (bullets[i].life <= 0) {

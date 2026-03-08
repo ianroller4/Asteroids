@@ -10,23 +10,54 @@ class Saucer extends Actor {
     let p = new Polygon([a, b, c, d, e, f]);
     super(pos, p);
     this.size = size;
-    this.bullets = [];
+    this.vel = createVector(5, 0);
+
+    // Shoot Variables
+    this.canShoot = true;
+    this.shootTimer = 0;
+    this.shootTimerMax = 500;
   }
 
   update() {
+    let result = false;
     push();
     translate(this.pos.x, this.pos.y);
+    this.move();
     this.poly.drawPoly();
     pop();
-    for (let i = 0; i < this.bullets.length; i++) {
-      this.bullets[i].update();
-      if (this.bullets[i].life <= 0) {
-        this.bullets.splice(i, 1);
+    this.shootTimerUpdate();
+    if (this.pos.x < 0 || this.pos.x > width) {
+      result = true;
+    }
+    return result;
+  }
+
+  move() {
+    this.pos.add(this.vel);
+  }
+
+  shoot(position) {
+    let fireVector = position.sub(this.pos).normalize();
+    let fireAngle = atan2(fireVector.y, fireVector.x) + HALF_PI;
+    switch (this.size) {
+      case 2:
+        fireAngle += random(-0.1, 0.1);
+        break;
+      case 4:
+        fireAngle += random(-0.5, 0.5);
+        break;
+    }
+    this.canShoot = false;
+    return new Bullet(this.pos.copy(), fireAngle);
+  }
+
+  shootTimerUpdate() {
+    if (!this.canShoot) {
+      this.shootTimer += deltaTime;
+      if (this.shootTimer >= this.shootTimerMax) {
+        this.shootTimer -= this.shootTimerMax;
+        this.canShoot = true;
       }
     }
   }
-
-  move() {}
-
-  shoot(position) {}
 }

@@ -23,10 +23,10 @@ function draw() {
   gameManager.update();
 }
 
-function mousePressed() {
-  if (!bgMusic.isPlaying()) {
-    bgMusic.setVolume(0.2);
-    bgMusic.play();
-    bgMusic.loop();
-  }
-}
+// function mousePressed() {
+//   if (!bgMusic.isPlaying()) {
+//     bgMusic.setVolume(0.2);
+//     bgMusic.play();
+//     bgMusic.loop();
+//   }
+// }

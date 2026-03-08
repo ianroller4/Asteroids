@@ -19,13 +19,20 @@ class ActorManager {
       pos.mult(sqrt(pow(width, 2) + pow(height, 2)));
       this.asteroids.push(new Asteroid(pos, 3, p5.Vector.random2D()));
     }
+    this.saucer = new Saucer(createVector(0, height / 2), 2);
   }
 
   updateActors() {
     this.readInput();
     this.player.update();
     if (this.saucer != null) {
-      this.saucer.update();
+      if (this.saucer.canShoot) {
+        this.sBullets.push(this.saucer.shoot(this.player.pos.copy()));
+      }
+      let clearSaucer = this.saucer.update();
+      if (clearSaucer) {
+        this.saucer = null;
+      }
     }
     for (let b = 0; b < this.pBullets.length; b++) {
       this.pBullets[b].update();
@@ -153,6 +160,7 @@ class ActorManager {
           this.explosionSFX.play();
           this.asteroids.splice(a, 1);
           this.saucer = null;
+          break;
         }
       }
     }

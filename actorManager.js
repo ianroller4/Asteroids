@@ -19,7 +19,7 @@ class ActorManager {
       pos.mult(sqrt(pow(width, 2) + pow(height, 2)));
       this.asteroids.push(new Asteroid(pos, 3, p5.Vector.random2D()));
     }
-    this.saucer = new Saucer(createVector(0, height / 2), 2);
+    this.spawnSaucer();
   }
 
   updateActors() {
@@ -49,6 +49,21 @@ class ActorManager {
     for (let a = 0; a < this.asteroids.length; a++) {
       this.asteroids[a].update();
     }
+  }
+
+  spawnSaucer() {
+    let size = 4;
+    let direction = 1;
+    let position = createVector(0, random(height / 10, height - height / 10));
+
+    if (random() < 0.5) {
+      direction = -1;
+      position = createVector(width, random(height / 10, height - height / 10));
+    }
+    if (random() < 0.2) {
+      size = 2;
+    }
+    this.saucer = new Saucer(position, size, direction);
   }
 
   readInput() {
@@ -93,9 +108,32 @@ class ActorManager {
     let r3 = this.checkPlayerBulletCollision();
 
     // Saucer Bullets Collided with Asteroids
-    let r4 = this.checkSaucerBulletCollision();
+    let r4 = this.checkSaucerBulletAsteroidCollision();
 
-    return r1 || r2 || r3 || r4;
+    // Saucer Bullets Collided with Player
+    let r5 = this.checkSaucerBulletPlayerCollision();
+
+    // Saucer Collided with Player
+    let r6 = this.checkSaucerPlayerCollision();
+
+    return r1 || r2 || r3 || r4 || r5 || r6;
+  }
+
+  checkSaucerPlayerCollision() {
+    let result = false;
+    if (this.saucer != null) {
+      result = this.player.poly.polyPolyCollision(
+        this.saucer.poly.vertices,
+        this.player.pos,
+        this.saucer.pos,
+      );
+      if (result) {
+        this.explosionSFX.play();
+        this.saucer = null;
+        this.player.death();
+      }
+    }
+    return result;
   }
 
   checkPlayerBulletCollision() {
@@ -131,9 +169,50 @@ class ActorManager {
     return result;
   }
 
-  checkSaucerBulletCollision() {
+  checkSaucerBulletPlayerCollision() {
     let result = false;
+    for (let b = this.sBullets.length - 1; b >= 0; b--) {
+      let hit = this.sBullets[b].poly.polyPolyCollision(
+        this.player.poly.vertices,
+        this.sBullets[b].pos,
+        this.player.pos,
+      );
+      result = result || hit;
+      if (hit) {
+        this.explosionSFX.play();
+        this.sBullets.splice(b, 1);
+        this.player.death();
+      }
+    }
+    return result;
+  }
 
+  checkSaucerBulletAsteroidCollision() {
+    let result = false;
+    for (let b = this.sBullets.length - 1; b >= 0; b--) {
+      for (let a = this.asteroids.length - 1; a >= 0; a--) {
+        let hit = this.sBullets[b].poly.polyPolyCollision(
+          this.asteroids[a].poly.vertices,
+          this.sBullets[b].pos,
+          this.asteroids[a].pos,
+        );
+        result = result || hit;
+        if (hit) {
+          switch (this.asteroids[a].lifeState) {
+            case 3:
+              this.spawnMidAsteroids(this.asteroids[a].pos.copy());
+              break;
+            case 2:
+              this.spawnBabyAsteroids(this.asteroids[a].pos.copy());
+              break;
+          }
+          this.explosionSFX.play();
+          this.asteroids.splice(a, 1);
+          this.sBullets.splice(b, 1);
+          break;
+        }
+      }
+    }
     return result;
   }
 

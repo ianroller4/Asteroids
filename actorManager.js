@@ -116,7 +116,10 @@ class ActorManager {
     // Saucer Collided with Player
     let r6 = this.checkSaucerPlayerCollision();
 
-    return r1 || r2 || r3 || r4 || r5 || r6;
+    // Player Bullets Collided with Saucer
+    let r7 = this.checkPlayerBulletSaucerCollision();
+
+    return r1 || r2 || r3 || r4 || r5 || r6 || r7;
   }
 
   checkSaucerPlayerCollision() {
@@ -131,6 +134,32 @@ class ActorManager {
         this.explosionSFX.play();
         this.saucer = null;
         this.player.death();
+      }
+    }
+    return result;
+  }
+
+  checkPlayerBulletSaucerCollision() {
+    let result = false;
+    if (this.saucer != null) {
+      for (let b = this.pBullets.length - 1; b >= 0; b--) {
+        let hit = this.pBullets[b].poly.polyPolyCollision(
+          this.saucer.poly.vertices,
+          this.pBullets[b].pos,
+          this.saucer.pos,
+        );
+        result = result || hit;
+        if (hit) {
+          if (this.saucer.size == 4) {
+            this.player.updateScore(200);
+          } else {
+            this.player.updateScore(1000);
+          }
+          this.explosionSFX.play();
+          this.saucer = null;
+          this.pBullets.splice(b, 1);
+          break;
+        }
       }
     }
     return result;

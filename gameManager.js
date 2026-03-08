@@ -4,6 +4,7 @@ class GameManager {
     this.menu = new MainMenu();
     this.over = new GameOver();
     this.game = new ActorManager();
+    this.shakeAmount = 0;
   }
 
   update() {
@@ -25,17 +26,31 @@ class GameManager {
   }
 
   updateGame() {
+    let xShake = random(-this.shakeAmount, this.shakeAmount);
+    let yShake = random(-this.shakeAmount, this.shakeAmount);
+
+    translate(xShake, yShake);
     this.game.updateActors();
-    this.game.collisionCheck();
+    let result = this.game.collisionCheck();
+
+    if (result) {
+      this.screenShake();
+    }
+
     if (this.game.player.lives <= 0) {
       this.state = "over";
       this.game.engineSFX.stop();
     }
     this.drawHud();
+    this.shakeAmount *= 0.9;
   }
 
   updateOver() {
     this.over.update();
+  }
+
+  screenShake() {
+    this.shakeAmount = 10;
   }
 
   drawHud() {

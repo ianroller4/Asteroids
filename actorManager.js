@@ -14,12 +14,12 @@ class ActorManager {
     this.engineSFX.setVolume(0.5);
 
     this.level = 1;
-    for (let i = 0; i < this.level * 5; i++) {
+    for (let i = 0; i < 5; i++) {
       let pos = p5.Vector.random2D();
       pos.mult(sqrt(pow(width, 2) + pow(height, 2)));
       this.asteroids.push(new Asteroid(pos, 3, p5.Vector.random2D()));
     }
-    this.spawnSaucer();
+    this.saucerScoreLimit = 200;
   }
 
   updateActors() {
@@ -49,6 +49,19 @@ class ActorManager {
     for (let a = 0; a < this.asteroids.length; a++) {
       this.asteroids[a].update();
     }
+    if (this.player.score >= this.saucerScoreLimit) {
+      this.spawnSaucer();
+    }
+  }
+
+  nextLevel() {
+    this.level++;
+    let asteroidsToSpawn = 5 + 2 * (this.level - 1);
+    for (let i = 0; i < asteroidsToSpawn; i++) {
+      let pos = p5.Vector.random2D();
+      pos.mult(sqrt(pow(width, 2) + pow(height, 2)));
+      this.asteroids.push(new Asteroid(pos, 3, p5.Vector.random2D()));
+    }
   }
 
   spawnSaucer() {
@@ -64,6 +77,7 @@ class ActorManager {
       size = 2;
     }
     this.saucer = new Saucer(position, size, direction);
+    this.saucerScoreLimit += 1000;
   }
 
   readInput() {

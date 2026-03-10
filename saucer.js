@@ -10,7 +10,7 @@ class Saucer extends Actor {
     let p = new Polygon([a, b, c, d, e, f]);
     super(pos, p);
     this.size = size;
-    this.vel = createVector(5 * direction, 0);
+    this.vel = createVector(2 * direction * size, 0);
 
     // Shoot Variables
     this.canShoot = true;

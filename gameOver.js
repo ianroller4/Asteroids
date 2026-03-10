@@ -6,10 +6,11 @@ class GameOver {
   update() {
     this.drawText();
     this.drawButton();
-    this.checkForButtonPress();
+    return this.checkForButtonPress();
   }
 
   checkForButtonPress() {
+    let result = false;
     if (mouseIsPressed && !this.mouseWasPressed) {
       let x = mouseX;
       let y = mouseY;
@@ -19,10 +20,11 @@ class GameOver {
       let yBB = (3 * height) / 4 + height / 8;
 
       if (x >= xLB && x <= xRB && y <= yBB && y >= yUB) {
-        print("button clicked");
+        result = true;
       }
     }
     this.mouseWasPressed = mouseIsPressed;
+    return result;
   }
 
   drawText() {

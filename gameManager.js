@@ -43,10 +43,17 @@ class GameManager {
     }
     this.drawHud();
     this.shakeAmount *= 0.9;
+    if (this.game.asteroids.length == 0) {
+      this.game.nextLevel();
+    }
   }
 
   updateOver() {
-    this.over.update();
+    let clicked = this.over.update();
+    if (clicked) {
+      this.game = new ActorManager();
+      this.state = "game";
+    }
   }
 
   screenShake() {

@@ -43,6 +43,8 @@ class GameManager {
 
     if (this.game.player.lives <= 0) {
       this.state = "over";
+      this.over.name.show();
+      this.over.submit.show();
       this.over.displayScore = this.game.player.score;
       this.game.engineSFX.stop();
     }
@@ -60,9 +62,13 @@ class GameManager {
         break;
       case 1:
         this.state = "menu";
+        this.over.name.hide();
+        this.over.submit.hide();
         break;
       case 2:
         this.game = new ActorManager();
+        this.over.name.hide();
+        this.over.submit.hide();
         this.state = "game";
         break;
     }

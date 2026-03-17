@@ -1,7 +1,14 @@
 class GameOver {
-  constructor() {
+  constructor(score) {
     this.mouseWasPressed = false;
     this.displayScore = 0;
+    this.name = createInput();
+    this.name.position(width / 2, height / 2 + height / 8);
+    this.name.hide();
+    this.submit = createButton("Submit Score");
+    this.submit.position(width / 2, height / 2 + height / 4);
+    this.submit.mousePressed(() => this.saveScore());
+    this.submit.hide();
   }
 
   update() {
@@ -19,6 +26,13 @@ class GameOver {
     }
 
     return 0;
+  }
+
+  saveScore() {
+    let t = this.name.value();
+    storeItem(t, this.displayScore);
+    let s = getItem(t);
+    print(str(s));
   }
 
   checkForTryAgainButtonPress() {

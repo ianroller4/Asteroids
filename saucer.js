@@ -46,6 +46,10 @@ class Saucer extends Actor {
           fireAngle = atan2(fireVector.y, fireVector.x) + HALF_PI;
         }
         let offset = 0.25;
+        offset -= floor(currentScore / 100) * 0.01;
+        if (offset < 0) {
+          offset = 0;
+        }
         fireAngle += random(-offset, offset);
         break;
       case 4:

@@ -43,6 +43,7 @@ class GameManager {
 
     if (this.game.player.lives <= 0) {
       this.state = "over";
+      this.over.displayScore = this.game.player.score;
       this.game.engineSFX.stop();
     }
     this.drawHud();

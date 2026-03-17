@@ -1,10 +1,12 @@
 class GameOver {
   constructor() {
     this.mouseWasPressed = false;
+    this.displayScore = 0;
   }
 
   update() {
     this.drawText();
+    this.drawScore();
     this.drawButton();
     return this.checkForButtonPress();
   }
@@ -29,10 +31,19 @@ class GameOver {
 
   drawText() {
     push();
-    textSize(100);
+    textSize(min(width / 4, height / 4));
     fill("white");
     textAlign(CENTER, CENTER);
     text("Game Over", width / 2, height / 4);
+    pop();
+  }
+
+  drawScore() {
+    push();
+    textSize(100);
+    fill("white");
+    textAlign(CENTER, CENTER);
+    text(str(this.displayScore), width / 2, height / 2);
     pop();
   }
 

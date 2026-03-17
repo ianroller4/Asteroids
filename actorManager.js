@@ -30,7 +30,7 @@ class ActorManager {
         this.sBullets.push(
           this.saucer.shoot(
             this.player.pos.copy(),
-            this.player.score.copy(),
+            this.player.score,
             this.player.vel.copy(),
           ),
         );

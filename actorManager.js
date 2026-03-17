@@ -27,7 +27,13 @@ class ActorManager {
     this.player.update();
     if (this.saucer != null) {
       if (this.saucer.canShoot) {
-        this.sBullets.push(this.saucer.shoot(this.player.pos.copy()));
+        this.sBullets.push(
+          this.saucer.shoot(
+            this.player.pos.copy(),
+            this.player.score.copy(),
+            this.player.vel.copy(),
+          ),
+        );
       }
       let clearSaucer = this.saucer.update();
       if (clearSaucer) {

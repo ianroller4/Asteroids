@@ -36,15 +36,19 @@ class Saucer extends Actor {
     this.pos.add(this.vel);
   }
 
-  shoot(position) {
+  shoot(position, currentScore, pVel) {
     let fireVector = position.sub(this.pos).normalize();
     let fireAngle = atan2(fireVector.y, fireVector.x) + HALF_PI;
     switch (this.size) {
       case 2:
+        if (currentScore > 1000) {
+          fireVector += pVel;
+          fireAngle = atan2(fireVector.y, fireVector.x) + HALF_PI;
+        }
         fireAngle += random(-0.1, 0.1);
         break;
       case 4:
-        fireAngle += random(-0.5, 0.5);
+        fireAngle += random(-1, 1);
         break;
     }
     this.canShoot = false;

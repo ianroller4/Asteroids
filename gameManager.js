@@ -1,6 +1,6 @@
 class GameManager {
   constructor() {
-    this.state = "game";
+    this.state = "menu";
     this.menu = new MainMenu();
     this.over = new GameOver();
     this.game = new ActorManager();
@@ -22,7 +22,11 @@ class GameManager {
   }
 
   updateMenu() {
-    this.menu.update();
+    let clicked = this.menu.update();
+    if (clicked) {
+      this.game = new ActorManager();
+      this.state = "game";
+    }
   }
 
   updateGame() {

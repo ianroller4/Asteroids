@@ -5,6 +5,7 @@ class ActorManager {
     this.asteroids = [];
     this.pBullets = [];
     this.sBullets = [];
+    this.particles = [];
 
     this.engineSFX = loadSound("SFX/Engine.mp3");
     this.explosionSFX = loadSound("SFX/Explosion.mp3");
@@ -57,6 +58,19 @@ class ActorManager {
     }
     if (this.player.score >= this.saucerScoreLimit) {
       this.spawnSaucer();
+    }
+
+    for (let p = this.particles.length - 1; p >= 0; p--) {
+      this.particles[p].update();
+      if (this.particles[p].alpha <= 0) {
+        this.particles.splice(p, 1);
+      }
+    }
+  }
+
+  spawnParticles(pos) {
+    for (let i = 0; i < 15; i++) {
+      this.particles.push(new Particle(pos.copy()));
     }
   }
 
@@ -152,6 +166,7 @@ class ActorManager {
       );
       if (result) {
         this.explosionSFX.play();
+        this.spawnParticles(this.saucer.pos.copy());
         this.saucer = null;
         this.player.death();
       }
@@ -176,6 +191,7 @@ class ActorManager {
             this.player.updateScore(1000);
           }
           this.explosionSFX.play();
+          this.spawnParticles(this.saucer.pos.copy());
           this.saucer = null;
           this.pBullets.splice(b, 1);
           break;
@@ -209,6 +225,7 @@ class ActorManager {
               this.player.updateScore(100);
           }
           this.explosionSFX.play();
+          this.spawnParticles(this.asteroids[a].pos.copy());
           this.asteroids.splice(a, 1);
           this.pBullets.splice(b, 1);
           break;
@@ -230,6 +247,7 @@ class ActorManager {
       if (hit) {
         this.explosionSFX.play();
         this.sBullets.splice(b, 1);
+        this.spawnParticles(this.player.pos.copy());
         this.player.death();
       }
     }
@@ -256,6 +274,7 @@ class ActorManager {
               break;
           }
           this.explosionSFX.play();
+          this.spawnParticles(this.asteroids[a].pos.copy());
           this.asteroids.splice(a, 1);
           this.sBullets.splice(b, 1);
           break;
@@ -286,6 +305,7 @@ class ActorManager {
               break;
           }
           this.explosionSFX.play();
+          this.spawnParticles(this.asteroids[a].pos.copy());
           this.asteroids.splice(a, 1);
           this.saucer = null;
           break;
@@ -319,6 +339,7 @@ class ActorManager {
             this.player.updateScore(100);
         }
         this.explosionSFX.play();
+        this.spawnParticles(this.asteroids[a].pos.copy());
         this.asteroids.splice(a, 1);
         this.player.death();
       }

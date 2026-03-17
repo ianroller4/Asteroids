@@ -45,7 +45,7 @@ class Saucer extends Actor {
           fireVector += pVel;
           fireAngle = atan2(fireVector.y, fireVector.x) + HALF_PI;
         }
-        fireAngle += random(-0.1, 0.1);
+        fireAngle += random(-0.25, 0.25);
         break;
       case 4:
         fireAngle += random(-1, 1);

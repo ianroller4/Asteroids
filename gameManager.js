@@ -55,9 +55,16 @@ class GameManager {
 
   updateOver() {
     let clicked = this.over.update();
-    if (clicked) {
-      this.game = new ActorManager();
-      this.state = "game";
+    switch (clicked) {
+      case 0:
+        break;
+      case 1:
+        this.state = "menu";
+        break;
+      case 2:
+        this.game = new ActorManager();
+        this.state = "game";
+        break;
     }
   }
 

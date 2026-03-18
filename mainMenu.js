@@ -71,7 +71,7 @@ class MainMenu {
     pop();
 
     push();
-    textSize(100);
+    textSize(min(width / 8, height / 8));
     fill("black");
     textAlign(CENTER, CENTER);
     text("Play", width / 2, (3 * height) / 4);

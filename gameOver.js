@@ -66,7 +66,7 @@ class GameOver {
     pop();
 
     push();
-    textSize(100);
+    textSize(min(width / 8, height / 8));
     fill("black");
     textAlign(CENTER, CENTER);
     text("Try Again", (3 * width) / 4, (3 * height) / 4);
@@ -99,7 +99,7 @@ class GameOver {
     pop();
 
     push();
-    textSize(100);
+    textSize(min(width / 8, height / 8));
     fill("black");
     textAlign(CENTER, CENTER);
     text("Main Menu", width / 4, (3 * height) / 4);
@@ -117,7 +117,7 @@ class GameOver {
 
   drawScore() {
     push();
-    textSize(100);
+    textSize(min(width / 8, height / 8));
     fill("white");
     textAlign(CENTER, CENTER);
     text(str(this.displayScore), width / 2, height / 2);

@@ -66,10 +66,10 @@ class GameOver {
     pop();
 
     push();
-    textSize(min(width / 8, height / 8));
+    textSize(min(width / 10, height / 10));
     fill("black");
     textAlign(CENTER, CENTER);
-    text("Try Again", (3 * width) / 4, (3 * height) / 4);
+    text("Retry", (3 * width) / 4, (3 * height) / 4);
     pop();
   }
 
@@ -99,10 +99,10 @@ class GameOver {
     pop();
 
     push();
-    textSize(min(width / 8, height / 8));
+    textSize(min(width / 10, height / 10));
     fill("black");
     textAlign(CENTER, CENTER);
-    text("Main Menu", width / 4, (3 * height) / 4);
+    text("Main", width / 4, (3 * height) / 4);
     pop();
   }
 

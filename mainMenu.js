@@ -1,11 +1,14 @@
 class MainMenu {
   constructor() {
     this.mouseWasPressed = false;
+    this.leaderboard = [];
+    storeItem("leaderboard", this.leaderboard);
   }
 
   update() {
     this.drawText();
     this.drawButton();
+    this.drawLeaderboard();
     return this.checkForButtonPress();
   }
 
@@ -25,6 +28,30 @@ class MainMenu {
     }
     this.mouseWasPressed = mouseIsPressed;
     return result;
+  }
+
+  drawLeaderboard() {
+    this.leaderboard = getItem("leaderboard");
+    if (this.leaderboard.length > 0) {
+      push();
+      textSize(min(width / 40, height / 40));
+      fill("white");
+      textAlign(CENTER, CENTER);
+      for (let i = 0; i < this.leaderboard.length; i++) {
+        let textString =
+          str(i + 1) +
+          ". " +
+          str(this.leaderboard[i].name) +
+          ": " +
+          str(this.leaderboard[i].score);
+        text(
+          textString,
+          width / 2,
+          height / 3 + height / 40 + (height * i) / 40,
+        );
+      }
+      pop();
+    }
   }
 
   drawText() {

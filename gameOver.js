@@ -29,10 +29,15 @@ class GameOver {
   }
 
   saveScore() {
-    let t = this.name.value();
-    storeItem(t, this.displayScore);
-    let s = getItem(t);
-    print(str(s));
+    let playerName = this.name.value();
+    let leaderboard = getItem("leaderboard");
+
+    leaderboard.push({ name: playerName, score: this.displayScore });
+    leaderboard.sort((a, b) => b.score - a.score);
+
+    leaderboard = leaderboard.slice(0, 10);
+
+    storeItem("leaderboard", leaderboard);
   }
 
   checkForTryAgainButtonPress() {
